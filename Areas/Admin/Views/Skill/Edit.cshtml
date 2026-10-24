@@ -1,0 +1,63 @@
+﻿@model PortfolioSite.ViewModels.SkillEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Model.SkillId == 0 ? "Yeni yetenek" : "Yeteneği düzenle";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">@ViewData["Title"]</h1>
+
+<form method="post" asp-area="Admin" asp-controller="Skill" asp-action="Save" class="mt-8 max-w-5xl space-y-8">
+    <input type="hidden" asp-for="SkillId" />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="NameTr" class="@label">Kategori adı</label><input asp-for="NameTr" class="@input" /></div>
+            <div><label asp-for="MainLineTr" class="@label">Ana satır</label><input asp-for="MainLineTr" class="@input" /></div>
+            <div><label asp-for="DetailTr" class="@label">Detay</label><textarea asp-for="DetailTr" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="BadgeTr" class="@label">Sağdaki rozet</label><input asp-for="BadgeTr" class="@input" /></div>
+        </div>
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="NameEn" class="@label">Category name</label><input asp-for="NameEn" class="@input" /></div>
+            <div><label asp-for="MainLineEn" class="@label">Main line</label><input asp-for="MainLineEn" class="@input" /></div>
+            <div><label asp-for="DetailEn" class="@label">Detail</label><textarea asp-for="DetailEn" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="BadgeEn" class="@label">Badge (right side)</label><input asp-for="BadgeEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+            <label asp-for="IconKey" class="@label">Simge</label>
+            <select asp-for="IconKey" class="@input">
+                <option value="">Simge yok</option>
+                <option value="backend">Terminal (backend)</option>
+                <option value="database">Veritabanı</option>
+                <option value="network">Ağ</option>
+                <option value="code">Kod</option>
+            </select>
+        </div>
+        <div>
+            <label asp-for="SortOrder" class="@label">Sıra</label>
+            <input asp-for="SortOrder" type="number" class="@input" />
+        </div>
+        <label class="flex items-center space-x-2 text-sm pt-7">
+            <input asp-for="IsActive" type="checkbox" class="rounded" />
+            <span>Sitede göster</span>
+        </label>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+        <a asp-area="Admin" asp-controller="Skill" asp-action="Index" class="text-sm underline underline-offset-4">Vazgeç</a>
+    </div>
+</form>

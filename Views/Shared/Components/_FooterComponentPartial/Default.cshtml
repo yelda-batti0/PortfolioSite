@@ -1,0 +1,99 @@
+﻿@model PortfolioSite.ViewModels.FooterViewModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> L
+
+@* ===== Kapanış cümlesi ===== *@
+<section class="pt-16 pb-24 md:pt-24 md:pb-36 px-6 md:px-14 bg-canvas">
+    <div class="max-w-7xl mx-auto space-y-16">
+        <hr class="reference-dashed-line w-full" />
+        <div class="max-w-6xl">
+            <h2 class="font-serif-editorial text-4xl sm:text-6xl md:text-8xl lg:text-[6.8rem] font-normal tracking-tight text-ink leading-[1.05]">
+                @Html.Raw(Model.ClosingStatementHtml)
+            </h2>
+            <div class="mt-8 max-w-sm sm:max-w-md opacity-80">
+                <div class="flex items-center space-x-3 text-neutral-400">
+                    <div class="h-px bg-neutral-400 flex-grow"></div>
+                    <div class="w-2 h-2 rounded-full border border-neutral-700 bg-amber-400"></div>
+                    <div class="h-px bg-neutral-400 flex-grow"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ===== Footer ===== *@
+<footer class="pt-16 pb-12 px-6 md:px-14 border-t border-neutral-300/80 bg-canvas text-ink text-sm">
+    <div class="max-w-7xl mx-auto space-y-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+
+            <div class="lg:col-span-4 space-y-4">
+                @if (Model.IsAvailable && !string.IsNullOrWhiteSpace(Model.AvailabilityText))
+                {
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-600/20 text-emerald-800 font-mono text-xs">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        <span>@Model.AvailabilityText</span>
+                    </div>
+                }
+                <p class="font-serif-editorial text-2xl text-ink font-normal leading-snug">@Model.Title</p>
+                <p class="text-sm text-neutral-600 leading-relaxed max-w-sm">@Model.Description</p>
+            </div>
+
+            <div class="lg:col-span-2 space-y-3">
+                <h4 class="font-mono text-xs uppercase tracking-wider text-muted font-semibold">@L["Footer_Directory"]</h4>
+                <ul class="space-y-2.5 text-sm">
+                    <li><a class="text-neutral-700 hover:text-ink hover:underline underline-offset-4 transition-colors" href="#projects">@L["Nav_Projects"]</a></li>
+                    <li><button class="text-neutral-700 hover:text-ink hover:underline underline-offset-4 transition-colors text-left cursor-pointer" onclick="openAboutDrawer();" type="button">@L["Nav_About"]</button></li>
+                    <li><a class="text-neutral-700 hover:text-ink hover:underline underline-offset-4 transition-colors" href="#skills">@L["Nav_Skills"]</a></li>
+                    <li><button class="text-neutral-700 hover:text-ink hover:underline underline-offset-4 transition-colors text-left cursor-pointer" onclick="openContactDrawer();" type="button">@L["Nav_Contact"]</button></li>
+                </ul>
+            </div>
+
+            <div class="lg:col-span-3 space-y-3">
+                @if (!string.IsNullOrWhiteSpace(Model.ColophonText) || !string.IsNullOrWhiteSpace(Model.ColophonNote))
+                {
+                    <h4 class="font-mono text-xs uppercase tracking-wider text-muted font-semibold">@L["Footer_Colophone"]</h4>
+                    @if (!string.IsNullOrWhiteSpace(Model.ColophonText))
+                    {
+                        <p class="text-xs text-neutral-600 leading-relaxed font-mono">@Model.ColophonText</p>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ColophonNote))
+                    {
+                        <div class="pt-1 text-xs text-neutral-500 font-mono">@Model.ColophonNote</div>
+                    }
+                }
+            </div>
+
+            <div class="lg:col-span-3 space-y-3">
+                <h4 class="font-mono text-xs uppercase tracking-wider text-muted font-semibold">@L["Footer_Connect"]</h4>
+                <ul class="space-y-2.5 text-sm">
+                    @foreach (var link in Model.SocialLinks)
+                    {
+                        <li>
+                            <a class="text-neutral-700 hover:text-ink hover:underline underline-offset-4 transition-colors inline-flex items-center space-x-1" href="@link.Url" rel="noopener noreferrer" target="_blank">
+                                <span>@link.Title</span> <span>↗</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                @if (!string.IsNullOrWhiteSpace(Model.Email))
+                {
+                    <div class="pt-2">
+                        <button class="inline-flex items-center space-x-2 text-xs font-mono text-neutral-700 hover:text-ink bg-neutral-200/60 hover:bg-neutral-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer" data-email="@Model.Email" id="copy-email-btn" type="button">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span id="copy-email-text">@Model.Email</span>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="pt-8 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-neutral-500">
+            <div>© @DateTime.Now.Year @Model.CopyrightText</div>
+            <div class="flex items-center space-x-4">
+                <span>@Model.LocationText</span>
+                <span>·</span>
+                <span>@L["Footer_Allrights"]</span>
+            </div>
+        </div>
+    </div>
+</footer>

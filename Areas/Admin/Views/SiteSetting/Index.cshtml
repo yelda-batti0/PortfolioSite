@@ -1,0 +1,56 @@
+﻿@model PortfolioSite.ViewModels.SiteSettingEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Site Ayarları";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">Site <span class="italic font-light">ayarları</span></h1>
+<p class="mt-2 text-sm text-neutral-600">Bölüm başlıkları ve özgeçmiş (CV).</p>
+
+<form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="SiteSetting" asp-action="Index" class="mt-8 max-w-5xl space-y-8">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6 space-y-4">
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Özgeçmiş (CV, PDF)</p>
+        <input type="hidden" asp-for="CvPath" />
+        @if (!string.IsNullOrEmpty(Model.CvPath))
+        {
+            <p class="text-sm">Yüklü CV: <a href="@Model.CvPath" target="_blank" class="underline underline-offset-4 hover:text-amber-700">Görüntüle ↗</a></p>
+            <label class="flex items-center space-x-2 text-sm"><input asp-for="RemoveCv" type="checkbox" class="rounded" /><span>Mevcut CV'yi kaldır</span></label>
+        }
+        <input asp-for="CvFile" type="file" accept=".pdf" class="text-sm" />
+        <p class="text-xs text-neutral-500">Sadece PDF, en fazla 5 MB. Yeni dosya yüklersen eskisi silinir. CV yüklüyse sitede Hakkımda panelinde "CV" bağlantısı görünür.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="ProjectsLabelTr" class="@label">Projeler bölümü başlığı</label><input asp-for="ProjectsLabelTr" class="@input" /></div>
+            <div><label asp-for="SkillsLabelTr" class="@label">Yetenekler üst etiketi</label><input asp-for="SkillsLabelTr" class="@input" /></div>
+            <div><label asp-for="SkillsTitleTr" class="@label">Yetenekler başlığı (*italik*)</label><input asp-for="SkillsTitleTr" class="@input" /></div>
+            <div><label asp-for="SkillsSideNoteTr" class="@label">Yetenekler sağ notu</label><input asp-for="SkillsSideNoteTr" class="@input" /></div>
+        </div>
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="ProjectsLabelEn" class="@label">Projects section title</label><input asp-for="ProjectsLabelEn" class="@input" /></div>
+            <div><label asp-for="SkillsLabelEn" class="@label">Skills top label</label><input asp-for="SkillsLabelEn" class="@input" /></div>
+            <div><label asp-for="SkillsTitleEn" class="@label">Skills title (*italic*)</label><input asp-for="SkillsTitleEn" class="@input" /></div>
+            <div><label asp-for="SkillsSideNoteEn" class="@label">Skills side note</label><input asp-for="SkillsSideNoteEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <div class="max-w-xs">
+        <label asp-for="ProjectsDateRange" class="@label">Tarih aralığı (projeler bölümü, sağ üst)</label>
+        <input asp-for="ProjectsDateRange" placeholder="2024 — 2026" class="@input" />
+    </div>
+
+    <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+</form>

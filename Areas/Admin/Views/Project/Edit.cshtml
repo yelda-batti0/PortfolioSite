@@ -1,0 +1,90 @@
+﻿@using PortfolioSite.DAL.Entities
+@model PortfolioSite.ViewModels.ProjectEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Model.ProjectId == 0 ? "Yeni proje" : "Projeyi düzenle";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">@ViewData["Title"]</h1>
+
+<form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="Project" asp-action="Save" class="mt-8 max-w-5xl space-y-8">
+    <input type="hidden" asp-for="ProjectId" />
+    <input type="hidden" asp-for="ImagePath" />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+            <label asp-for="CardType" class="@label">Kart tipi</label>
+            <select asp-for="CardType" class="@input">
+                <option value="@ProjectCardType.Featured">Featured (geniş, görsel sağda)</option>
+                <option value="@ProjectCardType.Standard">Standard (açık kart)</option>
+                <option value="@ProjectCardType.Code">Code (koyu kart, kod bloğu)</option>
+            </select>
+        </div>
+        <div><label asp-for="SortOrder" class="@label">Sıra</label><input asp-for="SortOrder" type="number" class="@input" /></div>
+        <label class="flex items-center space-x-2 text-sm pt-7"><input asp-for="IsPublished" type="checkbox" class="rounded" /><span>Sitede göster</span></label>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="TitleTr" class="@label">Başlık</label><input asp-for="TitleTr" class="@input" /></div>
+            <div><label asp-for="SubtitleTr" class="@label">Alt başlık</label><input asp-for="SubtitleTr" class="@input" /></div>
+            <div><label asp-for="DescriptionTr" class="@label">Açıklama</label><textarea asp-for="DescriptionTr" rows="5" class="@input"></textarea></div>
+            <div><label asp-for="CategoryLabelTr" class="@label">Üst etiket (sadece Code kartı)</label><input asp-for="CategoryLabelTr" class="@input" /></div>
+            <div><label asp-for="FooterNoteTr" class="@label">Alt not</label><input asp-for="FooterNoteTr" class="@input" /></div>
+            <div><label asp-for="PrimaryButtonTextTr" class="@label">1. buton yazısı</label><input asp-for="PrimaryButtonTextTr" class="@input" /></div>
+            <div><label asp-for="SecondaryButtonTextTr" class="@label">2. buton yazısı</label><input asp-for="SecondaryButtonTextTr" class="@input" /></div>
+        </div>
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="TitleEn" class="@label">Title</label><input asp-for="TitleEn" class="@input" /></div>
+            <div><label asp-for="SubtitleEn" class="@label">Subtitle</label><input asp-for="SubtitleEn" class="@input" /></div>
+            <div><label asp-for="DescriptionEn" class="@label">Description</label><textarea asp-for="DescriptionEn" rows="5" class="@input"></textarea></div>
+            <div><label asp-for="CategoryLabelEn" class="@label">Top label (Code card only)</label><input asp-for="CategoryLabelEn" class="@input" /></div>
+            <div><label asp-for="FooterNoteEn" class="@label">Footer note</label><input asp-for="FooterNoteEn" class="@input" /></div>
+            <div><label asp-for="PrimaryButtonTextEn" class="@label">Button 1 text</label><input asp-for="PrimaryButtonTextEn" class="@input" /></div>
+            <div><label asp-for="SecondaryButtonTextEn" class="@label">Button 2 text</label><input asp-for="SecondaryButtonTextEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div><label asp-for="PrimaryButtonUrl" class="@label">1. buton linki</label><input asp-for="PrimaryButtonUrl" placeholder="https://..." class="@input" /></div>
+        <div><label asp-for="SecondaryButtonUrl" class="@label">2. buton linki</label><input asp-for="SecondaryButtonUrl" placeholder="https://github.com/..." class="@input" /></div>
+    </div>
+
+    <div><label asp-for="Technologies" class="@label">Teknolojiler (virgülle ayır)</label><input asp-for="Technologies" placeholder="C#, .NET, SQLite" class="@input" /></div>
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6 space-y-4">
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Görsel (Featured ve Standard kartlar)</p>
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="@Model.ImagePath" alt="" class="max-h-40 rounded-xl border border-neutral-300" />
+            <label class="flex items-center space-x-2 text-sm"><input asp-for="RemoveImage" type="checkbox" class="rounded" /><span>Mevcut görseli kaldır</span></label>
+        }
+        <input asp-for="ImageFile" type="file" accept=".jpg,.jpeg,.png,.webp" class="text-sm" />
+        <p class="text-xs text-neutral-500">JPG, PNG veya WEBP, en fazla 5 MB. Sadece kendi ekran görüntülerini kullan.</p>
+    </div>
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6 space-y-4">
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Kod bloğu (sadece Code kartı)</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div><label asp-for="CodeFileName" class="@label">Dosya adı</label><input asp-for="CodeFileName" placeholder="Program.cs" class="@input" /></div>
+            <div><label asp-for="CodeBadge" class="@label">Rozet</label><input asp-for="CodeBadge" placeholder=".NET 10" class="@input" /></div>
+        </div>
+        <div><label asp-for="CodeSnippet" class="@label">Kod (düz metin)</label><textarea asp-for="CodeSnippet" rows="8" class="@input font-mono"></textarea></div>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+        <a asp-area="Admin" asp-controller="Project" asp-action="Index" class="text-sm underline underline-offset-4">Vazgeç</a>
+    </div>
+</form>

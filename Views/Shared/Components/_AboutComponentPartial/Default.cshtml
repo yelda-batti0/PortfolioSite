@@ -1,0 +1,56 @@
+﻿@model PortfolioSite.ViewModels.AboutViewModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> L
+
+<aside aria-label="About" class="drawer-left-panel fixed top-0 left-0 bottom-0 z-50 w-full sm:w-[500px] lg:w-[40vw] max-w-2xl bg-[#F5BE24] text-ink p-8 sm:p-14 overflow-y-auto shadow-2xl flex flex-col justify-between" id="about-drawer">
+    <div>
+        <div class="flex items-center justify-between pb-8 border-b border-ink/20">
+            <div class="flex items-center space-x-3">
+                <span class="font-mono text-xs uppercase tracking-widest font-semibold text-ink/75">@Model.HeaderLabel</span>
+            </div>
+            <button aria-label="Close" class="w-10 h-10 rounded-full border border-ink/30 flex items-center justify-center hover:bg-ink hover:text-[#F5BE24] transition-colors cursor-pointer" id="close-about-btn" type="button">
+                ✕
+            </button>
+        </div>
+
+        <div class="mt-10 space-y-8">
+            <h3 class="font-serif-editorial text-3xl sm:text-4xl leading-tight font-medium">@Model.Title</h3>
+
+            @foreach (var paragraph in Model.Paragraphs)
+            {
+                <p class="text-base sm:text-lg leading-relaxed text-ink/90 font-light">@paragraph</p>
+            }
+
+            @if (Model.Tenets.Count > 0)
+            {
+                <div class="p-6 bg-ink/5 rounded-2xl border border-ink/10 space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-wider font-semibold text-ink/80">@Model.TenetsTitle</h4>
+                    <ul class="space-y-2 text-sm text-ink/85 font-mono">
+                        @foreach (var tenet in Model.Tenets)
+                        {
+                            <li>→ @tenet</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-ink/20">
+        <div class="flex flex-wrap gap-6 text-sm font-medium">
+            @foreach (var link in Model.SocialLinks)
+            {
+                <a class="hover:underline underline-offset-4" href="@link.Url" rel="noopener noreferrer" target="_blank">@link.Title ↗</a>
+            }
+            @if (!string.IsNullOrEmpty(Model.CvPath))
+            {
+                <a class="hover:underline underline-offset-4" href="@Model.CvPath" rel="noopener" target="_blank">@L["About_Cv"] ↗</a>
+            }
+            <a class="close-about-link underline underline-offset-4 cursor-pointer" href="#projects">@L["About_ExploreWork"] ↓</a>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.FooterNote))
+        {
+            <p class="mt-4 font-mono text-xs text-ink/60">@Model.FooterNote</p>
+        }
+    </div>
+</aside>

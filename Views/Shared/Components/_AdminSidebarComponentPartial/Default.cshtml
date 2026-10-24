@@ -1,0 +1,44 @@
+﻿@model PortfolioSite.ViewModels.AdminSidebarViewModel
+
+@functions {
+    string Active(string controller) =>
+        string.Equals(Model.CurrentController, controller, StringComparison.OrdinalIgnoreCase)
+            ? "bg-ink text-canvas"
+            : "text-ink/75 hover:bg-neutral-200/70 hover:text-ink";
+}
+
+<aside class="w-64 shrink-0 bg-[#F4F1EC] border-r border-neutral-300/80 min-h-screen flex flex-col justify-between sticky top-0 h-screen overflow-y-auto">
+    <div class="p-6">
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="flex items-center space-x-3 mb-10">
+            <div class="w-10 h-10 rounded-2xl bg-ink text-canvas flex items-center justify-center font-serif-editorial text-lg">YB</div>
+            <span class="font-serif-editorial text-xl">Yönetim</span>
+        </a>
+
+        <nav class="space-y-1 text-sm font-medium">
+            <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("Dashboard")">Genel Bakış</a>
+            <a asp-area="Admin" asp-controller="Hero" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("Hero")">Ana Sayfa (Hero)</a>
+            <a asp-area="Admin" asp-controller="About" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("About")">Hakkımda</a>
+            <a asp-area="Admin" asp-controller="Project" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("Project")">Projeler</a>
+            <a asp-area="Admin" asp-controller="Skill" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("Skill")">Yetenekler</a>
+            <a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("SocialMedia")">Sosyal Linkler</a>
+            <a asp-area="Admin" asp-controller="ContactSettings" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("ContactSettings")">İletişim Paneli</a>
+            <a asp-area="Admin" asp-controller="FooterSettings" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("FooterSettings")">Footer</a>
+            <a asp-area="Admin" asp-controller="SiteSetting" asp-action="Index" class="block px-4 py-2.5 rounded-xl transition-colors @Active("SiteSetting")">Site Ayarları</a>
+            <a asp-area="Admin" asp-controller="Message" asp-action="Index" class="flex items-center justify-between px-4 py-2.5 rounded-xl transition-colors @Active("Message")">
+                <span>Mesajlar</span>
+                @if (Model.UnreadMessages > 0)
+                {
+                    <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-amber-400 text-neutral-950">@Model.UnreadMessages</span>
+                }
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-6 border-t border-neutral-300/80 space-y-3">
+        <a href="/" target="_blank" class="block text-xs font-mono text-neutral-600 hover:text-ink">Siteyi gör ↗</a>
+        <p class="text-xs font-mono text-neutral-500 truncate">@Model.Email</p>
+        <form method="post" asp-area="Admin" asp-controller="Login" asp-action="Logout">
+            <button type="submit" class="w-full text-left text-sm font-medium text-ink/75 hover:text-ink cursor-pointer">Çıkış yap</button>
+        </form>
+    </div>
+</aside>

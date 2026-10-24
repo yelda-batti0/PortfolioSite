@@ -1,0 +1,8 @@
+﻿<!-- BEGIN: Interactive Drawers & Backdrop -->
+    <!-- Shared Background Overlay -->
+    <div aria-hidden="true" class="drawer-backdrop fixed inset-0 bg-ink/40 z-40 transition-opacity backdrop-blur-sm" id="backdrop"></div>
+    <!-- Left Editorial Drawer: 'About' (Hakkımda - Warm Mustard Yellow) -->
+    @await Component.InvokeAsync("_AboutComponentPartial")
+    <!-- Right Editorial Drawer: 'Contact / Get In Touch' (Deep Charcoal / Black) -->
+    @await Component.InvokeAsync("_ContactComponentPartial")
+    <!-- END: Interactive Drawers & Backdrop -->

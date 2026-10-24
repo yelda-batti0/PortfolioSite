@@ -1,0 +1,99 @@
+<style data-purpose="editorial-typography" >
+body {
+    background-color: #FAF8F5;
+    color: #111111;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: #F5BE24;
+    color: #111111;
+}
+
+.font-serif-editorial {
+    font-family: 'EB Garamond', Georgia, serif;
+    letter-spacing: -0.015em;
+}
+
+/* Soft marker highlight style reminiscent of editorial portfolios */
+.text-highlight {
+    background: linear-gradient(120deg, rgba(219, 234, 254, 0.9) 0%, rgba(204, 225, 255, 0.85) 100%);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    color: #0c4a6e;
+}
+
+/* Custom thin dashed divider directly inspired by reference */
+.reference-dashed-line {
+    border: 0;
+    border-top: 1.5px dashed #A3A3A3;
+    height: 1px;
+}
+
+/* Drawer smooth slide transforms */
+.drawer-left-panel {
+    transform: translateX(-100%);
+    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-left-open .drawer-left-panel {
+    transform: translateX(0);
+}
+
+.drawer-right-panel {
+    transform: translateX(100%);
+    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-right-open .drawer-right-panel {
+    transform: translateX(0);
+}
+
+.drawer-backdrop {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.drawer-left-open #backdrop,
+.drawer-right-open #backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Whimsical Ambient Vector Star Animation */
+@@keyframes starFloatTwinkle {
+    0% {
+        transform: translateY(0px) rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(-3px) rotate(7deg) scale(1.08);
+    }
+
+    50% {
+        transform: translateY(0px) rotate(0deg) scale(0.96);
+    }
+
+    75% {
+        transform: translateY(2.5px) rotate(-6deg) scale(1.04);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg) scale(1);
+    }
+}
+
+.animated-star-sparkle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: starFloatTwinkle 5.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+</style >

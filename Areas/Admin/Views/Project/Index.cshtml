@@ -1,0 +1,47 @@
+﻿@model List<PortfolioSite.DAL.Entities.Project>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Projeler";
+}
+
+<div class="flex items-center justify-between">
+    <div>
+        <h1 class="font-serif-editorial text-4xl">Projeler</h1>
+        <p class="mt-2 text-sm text-neutral-600">Sitedeki proje kartları.</p>
+    </div>
+    <a asp-area="Admin" asp-controller="Project" asp-action="Create" class="px-6 py-2.5 rounded-full bg-ink text-canvas text-sm font-medium hover:bg-neutral-800 transition-colors">+ Yeni ekle</a>
+</div>
+
+<div class="mt-8 bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl divide-y divide-neutral-300/80 overflow-hidden">
+    @foreach (var p in Model)
+    {
+        <div class="p-5 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4 min-w-0">
+                @if (!string.IsNullOrEmpty(p.ImagePath))
+                {
+                    <img src="@p.ImagePath" alt="" class="w-16 h-12 object-cover rounded-lg border border-neutral-300 shrink-0" />
+                }
+                <div class="min-w-0">
+                    <p class="font-medium truncate">@p.TitleTr <span class="text-neutral-400 font-normal">/ @p.TitleEn</span></p>
+                    <p class="text-xs font-mono text-neutral-500 mt-1">@p.CardType · @p.Technologies</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+                <span class="text-xs font-mono text-neutral-500">Sıra: @p.SortOrder</span>
+                @if (!p.IsPublished)
+                {
+                    <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-neutral-300 text-neutral-700">Gizli</span>
+                }
+                <a asp-area="Admin" asp-controller="Project" asp-action="Edit" asp-route-id="@p.ProjectId" class="text-sm font-medium underline underline-offset-4 hover:text-amber-700">Düzenle</a>
+                <form method="post" asp-area="Admin" asp-controller="Project" asp-action="Delete" asp-route-id="@p.ProjectId"
+                      onsubmit="return confirm('Bu proje silinsin mi?');">
+                    <button type="submit" class="text-sm font-medium text-red-700 hover:text-red-900 cursor-pointer">Sil</button>
+                </form>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <p class="p-8 text-sm text-neutral-500 text-center">Henüz proje yok.</p>
+    }
+</div>

@@ -1,0 +1,33 @@
+﻿@model PortfolioSite.ViewModels.SocialEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = Model.SocialMediaId == 0 ? "Yeni link" : "Linki düzenle";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">@ViewData["Title"]</h1>
+
+<form method="post" asp-area="Admin" asp-controller="SocialMedia" asp-action="Save" class="mt-8 max-w-2xl space-y-6">
+    <input type="hidden" asp-for="SocialMediaId" />
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div><label asp-for="Title" class="@label">Ad (GitHub, LinkedIn...)</label><input asp-for="Title" class="@input" /></div>
+    <div><label asp-for="Url" class="@label">Link</label><input asp-for="Url" placeholder="https://..." class="@input" /></div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div><label asp-for="SortOrder" class="@label">Sıra</label><input asp-for="SortOrder" type="number" class="@input" /></div>
+        <label class="flex items-center space-x-2 text-sm pt-7"><input asp-for="IsActive" type="checkbox" class="rounded" /><span>Sitede göster</span></label>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+        <a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="text-sm underline underline-offset-4">Vazgeç</a>
+    </div>
+</form>

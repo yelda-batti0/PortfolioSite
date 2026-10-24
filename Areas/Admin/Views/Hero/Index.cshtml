@@ -1,0 +1,63 @@
+﻿@model PortfolioSite.ViewModels.HeroEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<h1 class="font-serif-editorial text-4xl">Ana sayfa <span class="italic font-light">(Hero)</span></h1>
+<p class="mt-2 text-sm text-neutral-600">Sitenin en üstündeki başlık, açıklama ve buton yazısı.</p>
+
+<form method="post" asp-area="Admin" asp-controller="Hero" asp-action="Index" class="mt-8 max-w-4xl space-y-8">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6 space-y-3">
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Başlık yazım ipuçları</p>
+        <p class="text-sm text-neutral-700 leading-relaxed">
+            <code class="font-mono bg-white px-1.5 py-0.5 rounded">==metin==</code> mavi vurgulu,
+            <code class="font-mono bg-white px-1.5 py-0.5 rounded">*metin*</code> italik,
+            <code class="font-mono bg-white px-1.5 py-0.5 rounded">✦</code> animasyonlu yıldız olur.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div>
+                <label asp-for="HeadlineTr" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Başlık</label>
+                <textarea asp-for="HeadlineTr" rows="4" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"></textarea>
+            </div>
+            <div>
+                <label asp-for="SubtitleTr" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Açıklama</label>
+                <textarea asp-for="SubtitleTr" rows="4" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"></textarea>
+            </div>
+            <div>
+                <label asp-for="ButtonTextTr" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Buton yazısı</label>
+                <input asp-for="ButtonTextTr" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500" />
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div>
+                <label asp-for="HeadlineEn" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Headline</label>
+                <textarea asp-for="HeadlineEn" rows="4" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"></textarea>
+            </div>
+            <div>
+                <label asp-for="SubtitleEn" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Description</label>
+                <textarea asp-for="SubtitleEn" rows="4" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"></textarea>
+            </div>
+            <div>
+                <label asp-for="ButtonTextEn" class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2">Button text</label>
+                <input asp-for="ButtonTextEn" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500" />
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+</form>

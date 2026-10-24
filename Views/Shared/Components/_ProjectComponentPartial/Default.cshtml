@@ -1,0 +1,171 @@
+﻿@using PortfolioSite.DAL.Entities
+@model PortfolioSite.ViewModels.ProjectsViewModel
+
+<section class="py-12 md:py-20 px-6 md:px-14 border-t border-ink/10" id="projects">
+    <div class="max-w-7xl mx-auto space-y-16 md:space-y-24">
+
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="font-mono text-xs uppercase tracking-widest text-muted">@Model.Label</span>
+            </div>
+            <span class="font-mono text-xs text-muted">@Model.DateRange</span>
+        </div>
+
+        @{
+            var items = Model.Items;
+            int i = 0;
+        }
+
+        @while (i < items.Count)
+        {
+            var item = items[i];
+
+            if (item.CardType == ProjectCardType.Featured)
+            {
+                @* FEATURED: tam genişlik, görsel sağda *@
+                <article class="group relative bg-[#F4F1EC] rounded-3xl overflow-hidden border border-neutral-300/80 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-neutral-400">
+                    <div class="p-8 sm:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="@(string.IsNullOrWhiteSpace(item.ImagePath) ? "lg:col-span-12" : "lg:col-span-5") space-y-6 order-2 lg:order-1">
+                            <div class="flex flex-wrap gap-2 text-xs font-mono text-muted">
+                                @foreach (var tech in item.Technologies)
+                                {
+                                    <span class="px-2.5 py-1 bg-white/80 rounded-md border border-neutral-300">@tech</span>
+                                }
+                            </div>
+                            <div>
+                                <h2 class="font-serif-editorial text-3xl sm:text-4xl lg:text-5xl text-ink font-normal leading-tight group-hover:text-amber-900 transition-colors">@item.Title</h2>
+                                <p class="font-serif-editorial italic text-lg text-neutral-600 mt-1">@item.Subtitle</p>
+                            </div>
+                            <p class="text-neutral-700 text-sm sm:text-base leading-relaxed">@item.Description</p>
+                            <div class="pt-4 flex flex-wrap items-center gap-4 text-sm font-medium">
+                                @if (!string.IsNullOrWhiteSpace(item.PrimaryButtonUrl))
+                                {
+                                    <a class="relative z-10 inline-flex items-center px-4 py-2 rounded-full bg-ink text-canvas hover:bg-neutral-800 text-xs font-mono transition-transform hover:-translate-y-0.5 shadow-sm" href="@item.PrimaryButtonUrl" rel="noopener noreferrer" target="_blank">
+                                        <span>@item.PrimaryButtonText ↗</span>
+                                    </a>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(item.SecondaryButtonUrl))
+                                {
+                                    <a class="relative z-10 inline-flex items-center space-x-1.5 px-4 py-2 rounded-full border border-neutral-400 bg-white/90 text-ink hover:border-ink text-xs font-mono transition-colors" href="@item.SecondaryButtonUrl" rel="noopener noreferrer" target="_blank">
+                                        @if (item.SecondaryButtonUrl.Contains("github.com", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path></svg>
+                                        }
+                                        <span>@item.SecondaryButtonText ↗</span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(item.ImagePath))
+                        {
+                            <div class="lg:col-span-7 order-1 lg:order-2 overflow-hidden rounded-2xl shadow-sm bg-neutral-900 border border-neutral-300">
+                                <img alt="@item.Title" class="w-full h-auto object-cover transform group-hover:scale-[1.03] transition-transform duration-500 ease-out" loading="lazy" src="@item.ImagePath" />
+                            </div>
+                        }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(item.PrimaryButtonUrl))
+                    {
+                        <a aria-label="@item.Title" class="absolute inset-0 z-0" href="@item.PrimaryButtonUrl" rel="noopener noreferrer" target="_blank"></a>
+                    }
+                </article>
+                i++;
+            }
+            else
+            {
+                @* Standard ve Code kartları yan yana ikili dizilir *@
+                var pair = new List<PortfolioSite.ViewModels.ProjectItemViewModel>();
+                while (i < items.Count && items[i].CardType != ProjectCardType.Featured && pair.Count < 2)
+                {
+                    pair.Add(items[i]);
+                    i++;
+                }
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+                    @for (int k = 0; k < pair.Count; k++)
+                    {
+                        var p = pair[k];
+                        string span = pair.Count == 1 ? "lg:col-span-12" : (k == 0 ? "lg:col-span-7" : "lg:col-span-5");
+
+                        if (p.CardType == ProjectCardType.Code)
+                        {
+                            <article class="relative @span bg-[#171719] text-canvas rounded-3xl p-8 sm:p-10 border border-neutral-800 flex flex-col justify-between group hover:shadow-2xl hover:border-neutral-700 transition-all">
+                                <div class="space-y-6">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-mono text-xs uppercase tracking-widest text-amber-400">@p.CategoryLabel</span>
+                                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl text-white font-normal group-hover:text-amber-300 transition-colors">@p.Title</h3>
+                                        <p class="font-serif-editorial italic text-base text-neutral-400 mt-1">@p.Subtitle</p>
+                                    </div>
+                                    <p class="text-neutral-400 text-sm leading-relaxed font-light">@p.Description</p>
+                                    @if (!string.IsNullOrWhiteSpace(p.CodeSnippet))
+                                    {
+                                        <div class="p-4 rounded-xl bg-neutral-900 border border-neutral-800 font-mono text-xs leading-relaxed text-neutral-300 overflow-x-auto">
+                                            <div class="text-neutral-500 pb-2 mb-2 border-b border-neutral-800 flex items-center justify-between">
+                                                <span>@p.CodeFileName</span>
+                                                <span class="text-emerald-400">@p.CodeBadge</span>
+                                            </div>
+                                            <pre class="font-mono"><code>@p.CodeSnippet</code></pre>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="pt-6 mt-8 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-4">
+                                    <span class="font-mono text-xs text-neutral-500">@p.FooterNote</span>
+                                    <div class="relative z-10 flex items-center space-x-3">
+                                        @if (!string.IsNullOrWhiteSpace(p.PrimaryButtonUrl))
+                                        {
+                                            <a class="px-3.5 py-1.5 rounded-full bg-amber-400 text-neutral-950 font-mono text-xs font-medium hover:bg-amber-300 transition-colors" href="@p.PrimaryButtonUrl" rel="noopener noreferrer" target="_blank">@p.PrimaryButtonText ↗</a>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(p.SecondaryButtonUrl))
+                                        {
+                                            <a class="text-sm font-medium text-amber-300 hover:text-white underline underline-offset-4 transition-colors" href="@p.SecondaryButtonUrl" rel="noopener noreferrer" target="_blank">@p.SecondaryButtonText ↗</a>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                        else
+                        {
+                            <article class="relative @span bg-[#F4F1EC] rounded-3xl p-8 sm:p-10 border border-neutral-300/80 flex flex-col justify-between group hover:shadow-xl hover:border-neutral-400 transition-all">
+                                <div class="space-y-5">
+                                    <div class="flex flex-wrap gap-2 text-xs font-mono text-muted">
+                                        @foreach (var tech in p.Technologies)
+                                        {
+                                            <span class="px-2.5 py-1 bg-white/80 rounded-md border border-neutral-300">@tech</span>
+                                        }
+                                    </div>
+                                    <div>
+                                        <h3 class="font-serif-editorial text-2xl sm:text-3xl lg:text-4xl text-ink font-normal group-hover:text-amber-900 transition-colors">@p.Title</h3>
+                                        <p class="font-serif-editorial italic text-base text-neutral-600 mt-0.5">@p.Subtitle</p>
+                                    </div>
+                                    <p class="text-neutral-700 text-sm leading-relaxed">@p.Description</p>
+                                    @if (!string.IsNullOrWhiteSpace(p.ImagePath))
+                                    {
+                                        <div class="mt-4 rounded-xl overflow-hidden border border-neutral-300 shadow-sm bg-neutral-950">
+                                            <img alt="@p.Title" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" loading="lazy" src="@p.ImagePath" />
+                                        </div>
+                                    }
+                                </div>
+                                <div class="pt-6 mt-6 border-t border-neutral-200 flex flex-wrap items-center justify-between gap-4">
+                                    <span class="font-mono text-xs text-muted">@p.FooterNote</span>
+                                    <div class="relative z-10 flex items-center space-x-3">
+                                        @if (!string.IsNullOrWhiteSpace(p.PrimaryButtonUrl))
+                                        {
+                                            <a class="px-3 py-1.5 rounded-full bg-ink text-canvas hover:bg-neutral-800 text-xs font-mono transition-transform hover:-translate-y-0.5 shadow-sm" href="@p.PrimaryButtonUrl" rel="noopener noreferrer" target="_blank">@p.PrimaryButtonText ↗</a>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(p.SecondaryButtonUrl))
+                                        {
+                                            <a class="text-xs font-mono text-neutral-700 underline underline-offset-4 hover:text-ink transition-colors" href="@p.SecondaryButtonUrl" rel="noopener noreferrer" target="_blank">@p.SecondaryButtonText ↗</a>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    }
+                </div>
+            }
+        }
+    </div>
+</section>

@@ -1,0 +1,37 @@
+﻿@model PortfolioSite.DAL.Entities.ContactMessage
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Mesaj";
+    var tr = new System.Globalization.CultureInfo("tr-TR");
+}
+
+<a asp-area="Admin" asp-controller="Message" asp-action="Index" class="text-sm underline underline-offset-4">← Mesajlara dön</a>
+
+<div class="mt-6 max-w-3xl bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-8 space-y-6">
+    <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Gönderen</p>
+        <p class="mt-1 text-lg font-medium">@Model.FullName</p>
+        <a href="mailto:@Model.Email" class="text-sm underline underline-offset-4 hover:text-amber-700">@Model.Email</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        <div><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Konu</p><p class="mt-1">@Model.Topic</p></div>
+        <div><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Tarih</p><p class="mt-1">@Model.CreatedAt.ToLocalTime().ToString("dd MMMM yyyy HH:mm", tr)</p></div>
+        <div><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Site dili</p><p class="mt-1">@Model.Language.ToUpper()</p></div>
+    </div>
+
+    <div>
+        <p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Mesaj</p>
+        <p class="mt-2 whitespace-pre-line leading-relaxed">@Model.Message</p>
+    </div>
+
+    <div class="flex items-center gap-4 pt-4 border-t border-neutral-300/80">
+        <a href="mailto:@Model.Email?subject=@Uri.EscapeDataString("Re: " + Model.Topic)" class="px-6 py-2.5 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors">Yanıtla</a>
+        <form method="post" asp-area="Admin" asp-controller="Message" asp-action="MarkUnread" asp-route-id="@Model.ContactMessageId">
+            <button type="submit" class="text-sm underline underline-offset-4 cursor-pointer">Okunmadı yap</button>
+        </form>
+        <form method="post" asp-area="Admin" asp-controller="Message" asp-action="Delete" asp-route-id="@Model.ContactMessageId" onsubmit="return confirm('Bu mesaj silinsin mi?');">
+            <button type="submit" class="text-sm font-medium text-red-700 hover:text-red-900 cursor-pointer">Sil</button>
+        </form>
+    </div>
+</div>

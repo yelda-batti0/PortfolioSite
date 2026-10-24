@@ -1,0 +1,50 @@
+﻿@model PortfolioSite.Areas.Admin.Controllers.LoginInput
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Yönetim Girişi</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="~/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-canvas text-ink antialiased min-h-screen flex items-center justify-center px-6">
+    <div class="w-full max-w-md">
+        <div class="mb-8 text-center">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-ink text-canvas flex items-center justify-center font-serif-editorial text-xl">YB</div>
+            <h1 class="mt-6 font-serif-editorial text-4xl">Yönetim <span class="italic font-light">paneli</span></h1>
+        </div>
+
+        <form method="post" asp-area="Admin" asp-controller="Login" asp-action="Index" asp-route-returnUrl="@ViewData["ReturnUrl"]"
+              class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-8 space-y-6">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-xs font-mono">
+                    <div asp-validation-summary="All"></div>
+                </div>
+            }
+
+            <div>
+                <label class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2" for="Email">E-posta</label>
+                <input asp-for="Email" autocomplete="username" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500" />
+            </div>
+            <div>
+                <label class="block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2" for="Password">Şifre</label>
+                <input asp-for="Password" autocomplete="current-password" class="w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500" type="password" />
+            </div>
+            <label class="flex items-center space-x-2 text-sm text-neutral-600">
+                <input asp-for="RememberMe" class="rounded" type="checkbox" />
+                <span>Beni hatırla</span>
+            </label>
+            <button class="w-full py-3.5 rounded-full bg-ink text-canvas text-sm font-medium hover:bg-neutral-800 transition-colors cursor-pointer" type="submit">Giriş yap</button>
+        </form>
+    </div>
+</body>
+</html>

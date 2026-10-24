@@ -1,0 +1,78 @@
+﻿@model PortfolioSite.ViewModels.ContactSettingsViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "İletişim Paneli";
+    var topics = (List<PortfolioSite.DAL.Entities.ContactTopic>)ViewBag.Topics;
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">İletişim <span class="italic font-light">paneli</span></h1>
+<p class="mt-2 text-sm text-neutral-600">"İletişime Geç" butonuna basınca sağdan açılan siyah panel.</p>
+
+<form method="post" asp-area="Admin" asp-controller="ContactSettings" asp-action="Index" class="mt-8 max-w-5xl space-y-8">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="HeaderLabelTr" class="@label">Üst etiket</label><input asp-for="HeaderLabelTr" class="@input" /></div>
+            <div><label asp-for="TitleTr" class="@label">Başlık</label><input asp-for="TitleTr" class="@input" /></div>
+            <div><label asp-for="TitleAccentTr" class="@label">Vurgulu kısım (italik sarı)</label><input asp-for="TitleAccentTr" class="@input" /></div>
+            <div><label asp-for="DescriptionTr" class="@label">Açıklama</label><textarea asp-for="DescriptionTr" rows="4" class="@input"></textarea></div>
+            <div><label asp-for="ResponseNotTr" class="@label">Alt not (yanıt süresi)</label><input asp-for="ResponseNotTr" class="@input" /></div>
+        </div>
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="HeaderLabelEn" class="@label">Top label</label><input asp-for="HeaderLabelEn" class="@input" /></div>
+            <div><label asp-for="TitleEn" class="@label">Title</label><input asp-for="TitleEn" class="@input" /></div>
+            <div><label asp-for="TitleAccentEn" class="@label">Accent part (italic yellow)</label><input asp-for="TitleAccentEn" class="@input" /></div>
+            <div><label asp-for="DescriptionEn" class="@label">Description</label><textarea asp-for="DescriptionEn" rows="4" class="@input"></textarea></div>
+            <div><label asp-for="ResponseNotEn" class="@label">Bottom note (response time)</label><input asp-for="ResponseNotEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <div class="max-w-xl">
+        <label asp-for="Email" class="@label">E-posta (panelde ve footer'da görünür)</label>
+        <input asp-for="Email" class="@input" />
+    </div>
+
+    <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+</form>
+
+<div class="mt-14 max-w-5xl">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="font-serif-editorial text-3xl">Konu <span class="italic font-light">listesi</span></h2>
+            <p class="mt-1 text-sm text-neutral-600">Formdaki açılır listenin seçenekleri.</p>
+        </div>
+        <a asp-area="Admin" asp-controller="ContactSettings" asp-action="CreateTopic" class="px-6 py-2.5 rounded-full bg-ink text-canvas text-sm font-medium hover:bg-neutral-800 transition-colors">+ Yeni konu</a>
+    </div>
+
+    <div class="mt-6 bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl divide-y divide-neutral-300/80 overflow-hidden">
+        @foreach (var t in topics)
+        {
+            <div class="p-5 flex items-center justify-between gap-4">
+                <p class="font-medium truncate">@t.NameTr <span class="text-neutral-400 font-normal">/ @t.NameEn</span></p>
+                <div class="flex items-center gap-3 shrink-0">
+                    <span class="text-xs font-mono text-neutral-500">Sıra: @t.SortOrder</span>
+                    @if (!t.IsActive) { <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-neutral-300 text-neutral-700">Gizli</span> }
+                    <a asp-area="Admin" asp-controller="ContactSettings" asp-action="EditTopic" asp-route-id="@t.ContactTopicId" class="text-sm font-medium underline underline-offset-4 hover:text-amber-700">Düzenle</a>
+                    <form method="post" asp-area="Admin" asp-controller="ContactSettings" asp-action="DeleteTopic" asp-route-id="@t.ContactTopicId" onsubmit="return confirm('Bu konu silinsin mi?');">
+                        <button type="submit" class="text-sm font-medium text-red-700 hover:text-red-900 cursor-pointer">Sil</button>
+                    </form>
+                </div>
+            </div>
+        }
+        @if (!topics.Any())
+        {
+            <p class="p-8 text-sm text-neutral-500 text-center">Henüz konu yok.</p>
+        }
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model PortfolioSite.ViewModels.FooterEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Footer";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">Footer <span class="italic font-light">ayarları</span></h1>
+<p class="mt-2 text-sm text-neutral-600">Sayfanın en altındaki büyük cümle ve alt bölüm.</p>
+
+<form method="post" asp-area="Admin" asp-controller="FooterSettings" asp-action="Index" class="mt-8 max-w-5xl space-y-8">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6">
+        <p class="text-sm text-neutral-700 leading-relaxed">
+            Kapanış cümlesinde <code class="font-mono bg-white px-1.5 py-0.5 rounded">*metin*</code> italik olur.
+            Künye (Colophon) alanlarını boş bırakırsan o sütun sitede gizlenir.
+            Telif yılı otomatik eklenir.
+        </p>
+    </div>
+
+    <label class="flex items-center space-x-2 text-sm"><input asp-for="IsAvailable" type="checkbox" class="rounded" /><span>Yeşil "müsaitim" rozetini göster</span></label>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="ClosingStatementTr" class="@label">Kapanış cümlesi</label><textarea asp-for="ClosingStatementTr" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="AvailabilityTextTr" class="@label">Müsaitlik rozeti</label><input asp-for="AvailabilityTextTr" class="@input" /></div>
+            <div><label asp-for="TitleTr" class="@label">Başlık</label><input asp-for="TitleTr" class="@input" /></div>
+            <div><label asp-for="DescriptionTr" class="@label">Açıklama</label><textarea asp-for="DescriptionTr" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="ColophonTextTr" class="@label">Künye metni (boş olabilir)</label><textarea asp-for="ColophonTextTr" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="ColophonNoteTr" class="@label">Künye notu (boş olabilir)</label><input asp-for="ColophonNoteTr" class="@input" /></div>
+            <div><label asp-for="CopyrightTextTr" class="@label">Telif metni (yıldan sonra)</label><input asp-for="CopyrightTextTr" class="@input" /></div>
+        </div>
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="ClosingStatementEn" class="@label">Closing statement</label><textarea asp-for="ClosingStatementEn" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="AvailabilityTextEn" class="@label">Availability badge</label><input asp-for="AvailabilityTextEn" class="@input" /></div>
+            <div><label asp-for="TitleEn" class="@label">Title</label><input asp-for="TitleEn" class="@input" /></div>
+            <div><label asp-for="DescriptionEn" class="@label">Description</label><textarea asp-for="DescriptionEn" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="ColophonTextEn" class="@label">Colophon text (optional)</label><textarea asp-for="ColophonTextEn" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="ColophonNoteEn" class="@label">Colophon note (optional)</label><input asp-for="ColophonNoteEn" class="@input" /></div>
+            <div><label asp-for="CopyrightTextEn" class="@label">Copyright text (after year)</label><input asp-for="CopyrightTextEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <div class="max-w-md">
+        <label asp-for="LocationText" class="@label">Konum (alt çubuk)</label>
+        <input asp-for="LocationText" class="@input" />
+    </div>
+
+    <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+</form>

@@ -1,0 +1,38 @@
+﻿@model List<PortfolioSite.DAL.Entities.ContactMessage>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Mesajlar";
+    var tr = new System.Globalization.CultureInfo("tr-TR");
+}
+
+<h1 class="font-serif-editorial text-4xl">Gelen <span class="italic font-light">mesajlar</span></h1>
+<p class="mt-2 text-sm text-neutral-600">İletişim formundan gelenler. En yeni üstte.</p>
+
+<div class="mt-8 bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl divide-y divide-neutral-300/80 overflow-hidden">
+    @foreach (var m in Model)
+    {
+        <div class="p-5 flex items-center justify-between gap-4">
+            <a asp-area="Admin" asp-controller="Message" asp-action="Details" asp-route-id="@m.ContactMessageId" class="min-w-0 flex-1 block">
+                <div class="flex items-center gap-2">
+                    @if (!m.IsRead)
+                    {
+                        <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                    }
+                    <p class="@(m.IsRead ? "font-normal" : "font-semibold") truncate">@m.FullName <span class="text-neutral-400 font-normal">· @m.Email</span></p>
+                </div>
+                <p class="text-xs font-mono text-neutral-500 mt-1 truncate">@m.Topic · @m.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm", tr) · @m.Language.ToUpper()</p>
+                <p class="text-sm text-neutral-600 mt-1 truncate">@m.Message</p>
+            </a>
+            <div class="flex items-center gap-3 shrink-0">
+                <form method="post" asp-area="Admin" asp-controller="Message" asp-action="Delete" asp-route-id="@m.ContactMessageId"
+                      onsubmit="return confirm('Bu mesaj silinsin mi?');">
+                    <button type="submit" class="text-sm font-medium text-red-700 hover:text-red-900 cursor-pointer">Sil</button>
+                </form>
+            </div>
+        </div>
+    }
+    @if (!Model.Any())
+    {
+        <p class="p-8 text-sm text-neutral-500 text-center">Henüz mesaj yok.</p>
+    }
+</div>

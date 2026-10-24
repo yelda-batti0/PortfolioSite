@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>@ViewData["Title"] · Yönetim</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script src="~/js/tailwind-config.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-canvas text-ink antialiased">
+    <div class="flex">
+        @await Component.InvokeAsync("_AdminSidebarComponentPartial")
+
+        <main class="flex-1 min-w-0 px-6 md:px-12 py-10">
+            @if (TempData["Success"] != null)
+            {
+                <div class="mb-6 p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-600/20 text-emerald-800 text-sm">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="mb-6 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">@TempData["Error"]</div>
+            }
+
+            @RenderBody()
+        </main>
+    </div>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

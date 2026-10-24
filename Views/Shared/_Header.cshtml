@@ -1,0 +1,37 @@
+﻿@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<SharedResource> L
+@{
+    string lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    string returnUrl = Uri.EscapeDataString(Context.Request.Path + Context.Request.QueryString);
+}
+
+
+
+<header class="sticky top-0 z-30 w-full bg-canvas/90 backdrop-blur-md px-6 md:px-14 py-6 transition-all duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-6 md:space-x-10">
+            <a aria-label="Home" class="group block transition-transform duration-300 hover:scale-105" href="#hero">
+                @* Geçici logo: baş harfler. Gerçek logoyu ileride admin panelinden yükleyeceğiz. *@
+                <div class="w-10 h-10 rounded-2xl bg-ink text-canvas flex items-center justify-center font-serif-editorial text-lg shadow-sm">YB</div>
+            </a>
+            <nav class="hidden sm:flex items-center space-x-6 text-sm font-medium tracking-tight text-ink/80">
+                <button class="hover:text-ink transition-colors pb-0.5 border-b border-transparent hover:border-ink cursor-pointer" id="open-about-nav" type="button">@L["Nav_About"]</button>
+                <a class="hover:text-ink transition-colors pb-0.5 border-b border-transparent hover:border-ink" href="#projects">@L["Nav_Projects"]</a>
+                <a class="hover:text-ink transition-colors pb-0.5 border-b border-transparent hover:border-ink" href="#skills">@L["Nav_Skills"]</a>
+            </nav>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <button class="sm:hidden text-sm font-medium text-ink underline underline-offset-4 cursor-pointer" id="open-about-mobile" type="button">@L["Nav_About"]</button>
+
+            <div class="flex items-center text-xs font-mono text-ink/60">
+                <a class="@(lang == "tr" ? "text-ink font-semibold" : "hover:text-ink")" href="/Language/Set?culture=tr&returnUrl=@returnUrl">TR</a>
+                <span class="mx-1.5">|</span>
+                <a class="@(lang == "en" ? "text-ink font-semibold" : "hover:text-ink")" href="/Language/Set?culture=en&returnUrl=@returnUrl">EN</a>
+            </div>
+
+            <button aria-label="@L["Nav_Contact"]" class="px-6 py-2.5 rounded-full bg-ink text-canvas hover:bg-neutral-800 text-sm font-medium transition-all duration-200 transform hover:-translate-y-0.5 shadow-sm active:translate-y-0 cursor-pointer" id="open-contact-btn" type="button">@L["Nav_Contact"]</button>
+        </div>
+    </div>
+</header>

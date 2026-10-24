@@ -1,0 +1,51 @@
+﻿@model PortfolioSite.ViewModels.AboutEditViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Hakkımda";
+    string input = "w-full bg-white border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500";
+    string label = "block font-mono text-xs uppercase tracking-wider text-neutral-500 mb-2";
+}
+
+<h1 class="font-serif-editorial text-4xl">Hakkımda <span class="italic font-light">paneli</span></h1>
+<p class="mt-2 text-sm text-neutral-600">Sitede "Hakkımda" butonuna basınca soldan açılan sarı panel.</p>
+
+<form method="post" asp-area="Admin" asp-controller="About" asp-action="Index" class="mt-8 max-w-5xl space-y-8">
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-800 text-sm">
+            <div asp-validation-summary="All"></div>
+        </div>
+    }
+
+    <div class="bg-[#F4F1EC] border border-neutral-300/80 rounded-3xl p-6">
+        <p class="text-sm text-neutral-700 leading-relaxed">
+            <strong>Metin:</strong> paragrafları aralarına boş satır bırakarak ayır.
+            <strong>İlkeler:</strong> her satır ayrı bir madde olur.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">Türkçe</p>
+            <div><label asp-for="HeaderLabelTr" class="@label">Üst etiket</label><input asp-for="HeaderLabelTr" class="@input" /></div>
+            <div><label asp-for="TitleTr" class="@label">Başlık</label><textarea asp-for="TitleTr" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="BodyTr" class="@label">Metin</label><textarea asp-for="BodyTr" rows="10" class="@input"></textarea></div>
+            <div><label asp-for="TenetsTitleTr" class="@label">İlkeler başlığı</label><input asp-for="TenetsTitleTr" class="@input" /></div>
+            <div><label asp-for="TenetsTr" class="@label">İlkeler (her satır bir madde)</label><textarea asp-for="TenetsTr" rows="5" class="@input"></textarea></div>
+            <div><label asp-for="FooterNoteTr" class="@label">Alt not</label><input asp-for="FooterNoteTr" class="@input" /></div>
+        </div>
+
+        <div class="space-y-6">
+            <p class="font-mono text-xs uppercase tracking-wider text-amber-700">English</p>
+            <div><label asp-for="HeaderLabelEn" class="@label">Top label</label><input asp-for="HeaderLabelEn" class="@input" /></div>
+            <div><label asp-for="TitleEn" class="@label">Title</label><textarea asp-for="TitleEn" rows="3" class="@input"></textarea></div>
+            <div><label asp-for="BodyEn" class="@label">Text</label><textarea asp-for="BodyEn" rows="10" class="@input"></textarea></div>
+            <div><label asp-for="TenetsTitleEn" class="@label">Principles title</label><input asp-for="TenetsTitleEn" class="@input" /></div>
+            <div><label asp-for="TenetsEn" class="@label">Principles (one per line)</label><textarea asp-for="TenetsEn" rows="5" class="@input"></textarea></div>
+            <div><label asp-for="FooterNoteEn" class="@label">Bottom note</label><input asp-for="FooterNoteEn" class="@input" /></div>
+        </div>
+    </div>
+
+    <button type="submit" class="px-8 py-3 rounded-full bg-amber-400 text-neutral-950 text-sm font-medium hover:bg-amber-300 transition-colors cursor-pointer">Kaydet</button>
+</form>
